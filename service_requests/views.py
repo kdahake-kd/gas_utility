@@ -1,12 +1,36 @@
-from django.shortcuts import render
+# from rest_framework import viewsets
+# from rest_framework.permissions import IsAuthenticated
+# from django.contrib.auth import get_user_model
+# from .models import ServiceRequest, ServiceRequestStatus
+# from .serializers import ServiceRequestSerializer, ServiceRequestStatusSerializer
 
-# Create your views here.
+# User = get_user_model()
 
-git pull origin/master 
-git pull origin
-git push -u origin master
-git config pull.rebase false
-git pull origin master
-git config pull.rebase true 
-git pull origin master  
-git push -u origin master 
+# class ServiceRequestViewSet(viewsets.ModelViewSet):
+#     permission_classes = [IsAuthenticated]
+#     queryset = ServiceRequest.objects.all()
+#     serializer_class = ServiceRequestSerializer
+
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+
+# class ServiceRequestStatusViewSet(viewsets.ModelViewSet):
+#     queryset = ServiceRequestStatus.objects.all()
+#     serializer_class = ServiceRequestStatusSerializer
+
+
+# service_requests/views.py
+from rest_framework import viewsets
+from .models import ServiceRequest
+from .serializers import ServiceRequestSerializer
+
+class ServiceRequestViewSet(viewsets.ModelViewSet):
+    queryset = ServiceRequest.objects.all()
+    serializer_class = ServiceRequestSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return ServiceRequest.objects.all()
+        return ServiceRequest.objects.filter(user=self.request.user)
+
+

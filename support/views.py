@@ -1,3 +1,9 @@
-from django.shortcuts import render
+# support/views.py
+from rest_framework import viewsets
+from .models import SupportInteraction
+from .serializers import SupportInteractionSerializer
 
-# Create your views here.
+class SupportInteractionViewSet(viewsets.ModelViewSet):
+    queryset = SupportInteraction.objects.all()
+    serializer_class = SupportInteractionSerializer
+
